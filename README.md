@@ -26,13 +26,11 @@ Per installare tutte le dipendenze:
 
 ```
 pnpm install
-
 ```
 Per Lanciare entrambi i server di dev (BE e FE):
 
 ```
 pnpm --stream -r dev
-
 ```
 Aprire infine il browser alla pagina [http://127.0.0.1:5173]( http://127.0.0.1:5173)
 Eventualmente controllare il payload all'indirizzo del back-end  [http://127.0.0.1:8080/data](http://127.0.0.1:8080/data)
