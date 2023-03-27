@@ -1,0 +1,17 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "The package containing some utility functions",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc --build",
+    "test": "vitest run --coverage",
+    "test:ui": "vitest --ui"
+  },
+  "devDependencies": {
+    "@vitest/coverage-c8": "^0.29.7",
+    "@vitest/ui": "^0.29.7",
+    "jsdom": "^21.1.1",
+    "vitest": "^0.29.7"
+  }
+}
