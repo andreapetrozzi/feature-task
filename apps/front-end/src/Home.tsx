@@ -7,6 +7,12 @@ import "./App.css";
 import { format } from "date-fns";
 
 export default function Home() {
+  
+  // Funzione cambia sfondo
+  function handleClick() {
+    document.body.style.backgroundColor = 'gray';
+  }
+
   const dataQuery = useQuery("repoData", () =>
     fetch(`http://localhost:${PORT}/data`).then(
       (res): Promise<FakeDatum[]> => res.json()
@@ -16,14 +22,30 @@ export default function Home() {
   const renderCounterElementRef = useRef<HTMLElement>(null);
   const [[from, to], setFromTo] = useState([0, 11]);
 
+  // Start
+  const ages = dataQuery.data?.map((datum) => {
+    const birthDate = new Date(datum.birthday);
+    const ageDiffMs = Date.now() - birthDate.getTime();
+    const ageDate = new Date(ageDiffMs); 
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  });
+
+  const maxAge = ages ? Math.max(...ages) : null;
+  const minAge = ages ? Math.min(...ages) : null;
+  const meanAge = ages ? Math.round(ages.reduce((a, b) => a + b) / ages.length) : null;
+  const medianAge = ages ? ages.sort()[Math.floor(ages.length / 2)] : null;
+
+  const premiumUsers = dataQuery.data?.filter((datum) => datum.subscriptionTier === "premium");
+  const percentagePremium = premiumUsers ? Math.round((premiumUsers.length / dataQuery.data.length) * 100) : null;
+
   const descriptionListArray = [
     { key: "Records", value: dataQuery.data?.length },
-    { key: "Max age", value: "?" },
-    { key: "Min age", value: "?" },
-    { key: "Mean age", value: "?" },
-    { key: "Median age", value: "?" },
-    { key: "Percentage of premium", value: "?" },
-    { key: "Records", value: "?" },
+    { key: "Max age", value: maxAge },
+    { key: "Min age", value: minAge },
+    { key: "Mean age", value: meanAge },
+    { key: "Median age", value: medianAge },
+    { key: "Percentage of premium", value: percentagePremium ? `${percentagePremium}%` : null },
+    { key: "Records", value: dataQuery.data?.length },
   ];
 
   useEffect(() => {
@@ -43,7 +65,7 @@ export default function Home() {
   }
   return (
     <div>
-      <button>Change background color</button>
+      <button onClick={handleClick}>Change background color</button>
       <div>
         <dl>
           <div className="key-value">
